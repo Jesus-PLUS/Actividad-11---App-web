@@ -1,18 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Mi App Supabase</title>
+    <meta charset="UTF-8">
+    <title>Directorio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        form { margin: 20px 0; }
+        input[type="text"] { width: 200px; padding: 5px; }
+        button { padding: 5px 10px; cursor: pointer; }
+        .error { color: red; }
+    </style>
 </head>
 <body>
-    <h1>Lista de Tareas</h1>
-    <form action="/add" method="POST">
-        <input type="text" name="task" required>
-        <button>Agregar</button>
+    <h1>Directorio</h1>
+
+    <!-- Formulario para agregar nuevo registro -->
+    <form method="POST" action="/add">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="celular" placeholder="Celular" required>
+        <input type="email" name="correo" placeholder="Correo" required>
+        <button type="submit">Agregar</button>
     </form>
-    <ul>
-        {% for task in tasks %}
-            <li>{{ task.task }} ({{ '✔' if task.is_complete else '✘' }})</li>
-        {% endfor %}
-    </ul>
+
+    <!-- Tabla de registros -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.nombre }}</td>
+                <td>{{ row.celular }}</td>
+                <td>{{ row.correo }}</td>
+                <td>
+                    <!-- Formulario para editar -->
+                    <form method="POST" action="/update/{{ row.id }}" style="display:inline;">
+                        <input type="text" name="nombre" value="{{ row.nombre }}" required>
+                        <input type="text" name="celular" value="{{ row.celular }}" required>
+                        <input type="email" name="correo" value="{{ row.correo }}" required>
+                        <button type="submit">Actualizar</button>
+                    </form>
+                    <!-- Formulario para eliminar -->
+                    <form method="POST" action="/delete/{{ row.id }}" style="display:inline;">
+                        <button type="submit" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Mostrar mensaje de error si existe -->
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
 </body>
 </html>
