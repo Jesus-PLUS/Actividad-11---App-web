@@ -12,6 +12,11 @@ supabase: Client = create_client(url, key)
 app = Flask(__name__)
 
 @app.route('/')
+def hello():
+    return "Hello, si jala lol"
+
+
+@app.route('/')
 def index():
     response = supabase.table('directorio').select('*').limit(100).execute()
     rows = response.data
@@ -38,8 +43,10 @@ def update(id):
 def delete(id):
     supabase.table('directorio').delete().eq('id', id).execute()
     return redirect(url_for('index'))
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 '''
