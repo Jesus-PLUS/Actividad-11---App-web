@@ -54,8 +54,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
+url = os.getenv("https://bwtqvuxvhrgzyskhfore.supabase.co")
+key = os.getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dHF2dXh2aHJnenlza2hmb3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3MzE1ODIsImV4cCI6MjA3NzMwNzU4Mn0.q54brlyjefnh2C7lkmXdrn5DligAxkA_YCSaK_xqtTE")
 
 # Inicializa Supabase solo si las variables existen
 if not url or not key:
