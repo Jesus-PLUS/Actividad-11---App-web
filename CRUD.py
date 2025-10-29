@@ -14,10 +14,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    response = supabase.table('directorio').select('*').limit(100).execute()
-    rows = response.data
-    return render_template('index.html', rows=rows)
-
+    try:
+        response = supabase.table('directorio').select('*').limit(100).execute()
+        rows = response.data
+        return render_template('index.html', rows=rows)
+    except Exception as e:
+        return f"Error: {str(e)}", 500
 
 @app.route('/add', methods=['POST'])
 def create():
