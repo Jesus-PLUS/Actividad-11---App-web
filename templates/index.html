@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi App Supabase</title>
+</head>
+<body>
+    <h1>Lista de Tareas</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="task" required>
+        <button>Agregar</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task.task }} ({{ '✔' if task.is_complete else '✘' }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
