@@ -1,1 +1,1 @@
-web: python CRUD.py
+web: gunicorn wsgi:app
