@@ -1,3 +1,4 @@
+'''
 from flask import Flask, render_template, request, redirect, url_for
 from supabase import create_client, Client
 import os
@@ -46,136 +47,17 @@ if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
 
-
-'''
-import mysql.connector
-cnx = mysql.connector.connect(user='dbUser', password='dbUserPass',
-                              host='localhost',
-                              database='sistemasOperativos')
-
-def mostrarTabla():
-    result = cursor.execute("SELECT * FROM directorio LIMIT 100")
-    rows = cursor.fetchall()
-    for rows in rows:
-        print(rows)
-
-programa = True
-
-print(cnx)
-
-if cnx and cnx.is_connected():
-
-    with cnx.cursor() as cursor:
-
-        while (programa):
-            print(""" 
-                1. Crear datos en la tabla (INSERT)
-                2. Leer datos de la tabla (SELECT)
-                3. Actualizar datos de la tabla (UPDATE)
-                4. Eliminar datos de la tabla (DELETE)
-                5. Salir
-            """)
-            menu = input("¿Qué opción desea?: ")
-
-            opcion = True
-
-            match (menu):
-                case "1":
-                    while opcion:
-                        nombre = input("Nombre: ")
-                        telefono = input("Telefono: ")
-                        correo = input("Correo: ")
-
-                        cursor.execute(
-                            f"INSERT INTO directorio(nombre, celular, correo) VALUES ('{nombre}','{telefono}','{correo}')")
-                        cnx.commit()
-
-                        mostrarTabla()
-
-                        ciclo = True
-                        while ciclo:
-                            respuesta = input("\n¿Desea ingresar otro registro? (y/n)?: ")
-                            respuesta = respuesta.upper()
-
-                            if respuesta == "Y":
-                                opcion = True
-                                ciclo = False
-                            elif respuesta == "N":
-                                opcion = False
-                                ciclo = False
-                            else:
-                                print("Selecciona una opción válida")
-                                ciclo = True
-
-                case "2":
-                    mostrarTabla()
-
-                case "3":
-                    while opcion:
-                        mostrarTabla()
-
-                        idUsuario = int(input("\nSelecciona el id del usuario que se desea modificar: "))
-
-                        nombreNuevo = input("Nombre nuevo: ")
-                        telefonoNuevo = input("Telefono nuevo: ")
-                        correoNuevo = input("Correo nuevo: ")
-
-                        cursor.execute(
-                            f"UPDATE directorio SET nombre='{nombreNuevo}',celular='{telefonoNuevo}',correo='{correoNuevo}' WHERE id = {idUsuario}")
-                        cnx.commit()
-
-                        mostrarTabla()
-
-                        ciclo = True
-                        while ciclo:
-                            respuesta = input("\n¿Desea actualizar otro registro? (y/n)?: ")
-                            respuesta = respuesta.upper()
-
-                            if respuesta == "Y":
-                                opcion = True
-                                ciclo = False
-                            elif respuesta == "N":
-                                opcion = False
-                                ciclo = False
-                            else:
-                                print("Selecciona una opción válida")
-                                ciclo = True
-
-                case "4":
-                    while opcion:
-
-                        mostrarTabla()
-
-                        idUsuarioElim = int(input("\nSelecciona el id del usuario que se desea eliminar: "))
-
-                        cursor.execute(f"DELETE FROM directorio WHERE id = {idUsuarioElim}")
-                        cnx.commit()
-
-                        mostrarTabla()
-
-                        ciclo = True
-                        while ciclo:
-                            respuesta = input("\n¿Desea eliminar otro registro? (y/n)?: ")
-                            respuesta = respuesta.upper()
-
-                            if respuesta == "Y":
-                                opcion = True
-                                ciclo = False
-                            elif respuesta == "N":
-                                opcion = False
-                                ciclo = False
-                            else:
-                                print("Selecciona una opción válida")
-                                ciclo = True
-
-                case "5":
-                    programa = False
-                case _:
-                    print("Selecciona una opción válida")
-
-    cnx.close()
-
-else:
-    print("Could not connect")
-
     '''
+
+from flask import Flask
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "¡Hola desde Render! Tu servidor está funcionando."
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
