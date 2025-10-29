@@ -46,17 +46,64 @@ def delete(id):
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-    '''
-
-from flask import Flask
+'''
+from flask import Flask, render_template, request, redirect, url_for
+from supabase import create_client, Client
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+
+# Inicializa Supabase solo si las variables existen
+if not url or not key:
+    raise ValueError("Faltan variables de entorno SUPABASE_URL o SUPABASE_KEY")
+
+supabase: Client = create_client(url, key)
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    return "¡Hola desde Render! Tu servidor está funcionando."
+def index():
+    try:
+        response = supabase.table('directorio').select('*').limit(100).execute()
+        rows = response.data
+        return render_template('index.html', rows=rows)
+    except Exception as e:
+        # Muestra el error en la página web para debuggear
+        return f"<h1>Error al conectar con Supabase</h1><pre>{str(e)}</pre>", 500
+
+@app.route('/add', methods=['POST'])
+def create():
+    nombre = request.form['nombre']
+    celular = request.form['celular']
+    correo = request.form['correo']
+    try:
+        supabase.table('directorio').insert({'nombre': nombre, 'celular': celular, 'correo': correo}).execute()
+        return redirect(url_for('index'))
+    except Exception as e:
+        return f"<h1>Error al agregar registro</h1><pre>{str(e)}</pre>", 500
+
+@app.route('/update/<int:id>', methods=['POST'])
+def update(id):
+    nombre = request.form['nombre']
+    celular = request.form['celular']
+    correo = request.form['correo']
+    try:
+        supabase.table('directorio').update({'nombre': nombre, 'celular': celular, 'correo': correo}).eq('id', id).execute()
+        return redirect(url_for('index'))
+    except Exception as e:
+        return f"<h1>Error al actualizar registro</h1><pre>{str(e)}</pre>", 500
+
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete(id):
+    try:
+        supabase.table('directorio').delete().eq('id', id).execute()
+        return redirect(url_for('index'))
+    except Exception as e:
+        return f"<h1>Error al eliminar registro</h1><pre>{str(e)}</pre>", 500
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
