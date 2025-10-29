@@ -11,10 +11,6 @@ supabase: Client = create_client(url, key)
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return "Hello, si jala lol"
-
 
 @app.route('/')
 def index():
