@@ -53,7 +53,7 @@ import os
 from dotenv import load_dotenv
 
 url = os.getenv("https://bwtqvuxvhrgzyskhfore.supabase.co")
-key = os.getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dHF2dXh2aHJnenlza2hmb3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3MzE1ODIsImV4cCI6MjA3NzMwNzU4Mn0.q54brlyjefnh2C7lkmXdrn5DligAxkA_YCSaK_xqtTE")
+key = os.getenv("sb_publishable_jyRa_eIIljvk3FIRufgzFg_HA6Ec9yc")
 
 load_dotenv()
 
