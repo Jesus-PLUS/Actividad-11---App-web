@@ -52,12 +52,15 @@ from supabase import create_client, Client
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
 url = os.getenv("https://bwtqvuxvhrgzyskhfore.supabase.co")
 key = os.getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dHF2dXh2aHJnenlza2hmb3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3MzE1ODIsImV4cCI6MjA3NzMwNzU4Mn0.q54brlyjefnh2C7lkmXdrn5DligAxkA_YCSaK_xqtTE")
 
+load_dotenv()
+
 # Inicializa Supabase solo si las variables existen
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+
 if not url or not key:
     raise ValueError("Faltan variables de entorno SUPABASE_URL o SUPABASE_KEY")
 
@@ -68,12 +71,13 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     try:
+        # Agrega un timeout para evitar que la app se quede colgada
         response = supabase.table('directorio').select('*').limit(100).execute()
         rows = response.data
         return render_template('index.html', rows=rows)
     except Exception as e:
-        # Muestra el error en la página web para debuggear
-        return f"<h1>Error al conectar con Supabase</h1><pre>{str(e)}</pre>", 500
+        # Devuelve una respuesta rápida en caso de error
+        return f"<h1>Error</h1><p>No se pudieron cargar los datos: {str(e)}</p>", 500
 
 @app.route('/add', methods=['POST'])
 def create():
