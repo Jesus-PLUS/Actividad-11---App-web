@@ -72,7 +72,7 @@ app = Flask(__name__)
 def index():
     try:
         # Agrega un timeout para evitar que la app se quede colgada
-        response = supabase.table('directorio').select('*').limit(100).execute()
+        response = supabase.table('Directorio').select('*').limit(100).execute()
         rows = response.data
         return render_template('index.html', rows=rows)
     except Exception as e:
@@ -85,7 +85,7 @@ def create():
     celular = request.form['celular']
     correo = request.form['correo']
     try:
-        supabase.table('directorio').insert({'nombre': nombre, 'celular': celular, 'correo': correo}).execute()
+        supabase.table('Directorio').insert({'nombre': nombre, 'celular': celular, 'correo': correo}).execute()
         return redirect(url_for('index'))
     except Exception as e:
         return f"<h1>Error al agregar registro</h1><pre>{str(e)}</pre>", 500
@@ -96,7 +96,7 @@ def update(id):
     celular = request.form['celular']
     correo = request.form['correo']
     try:
-        supabase.table('directorio').update({'nombre': nombre, 'celular': celular, 'correo': correo}).eq('id', id).execute()
+        supabase.table('Directorio').update({'nombre': nombre, 'celular': celular, 'correo': correo}).eq('id', id).execute()
         return redirect(url_for('index'))
     except Exception as e:
         return f"<h1>Error al actualizar registro</h1><pre>{str(e)}</pre>", 500
@@ -104,7 +104,7 @@ def update(id):
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
     try:
-        supabase.table('directorio').delete().eq('id', id).execute()
+        supabase.table('Directorio').delete().eq('id', id).execute()
         return redirect(url_for('index'))
     except Exception as e:
         return f"<h1>Error al eliminar registro</h1><pre>{str(e)}</pre>", 500
